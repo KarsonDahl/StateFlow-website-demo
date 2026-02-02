@@ -46,7 +46,7 @@ async function fetchPosts(numberOfPosts) {
     likeBtn.classList.remove('hide-on-scroll'); // make sure it’s visible
 
     commentBtn.classList.remove('hide-on-scroll');
-    const apiUrl = `http://localhost:3000/api/posts?topic=${topic}&limit=${numberOfPosts}&offset=${offset}`;
+    const apiUrl = `/api/posts?topic=${topic}&limit=${numberOfPosts}&offset=${offset}`;
     loadingIndicator.style.display = 'block';
 
     try {
