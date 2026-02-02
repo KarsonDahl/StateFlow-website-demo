@@ -5,9 +5,15 @@ const feed = document.getElementById("feed");
 let offset = 0;
 let loading = false;
 const LIMIT = 1;
-const TOPIC = "travel";
 
 feed.style.scrollSnapType = "y mandatory";
+
+function getTopic() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("topic") || location.hash.replace("#", "") || "travel";
+}
+
+let currentTopic = getTopic();
 
 const observer = new IntersectionObserver(
     entries => {
@@ -22,14 +28,16 @@ const observer = new IntersectionObserver(
             observer.unobserve(entry.target);
         });
     },
-    { threshold: 0.6 }
+    { threshold: 0.7 }
 );
 
 async function fetchPosts() {
     if (loading) return;
     loading = true;
 
-    const res = await fetch(`/api/posts?topic=${TOPIC}&limit=${LIMIT}&offset=${offset}`);
+    const res = await fetch(
+        `/api/posts?topic=${currentTopic}&limit=${LIMIT}&offset=${offset}`
+    );
     const data = await res.json();
 
     data.posts.forEach(createPost);
@@ -39,10 +47,10 @@ async function fetchPosts() {
 }
 
 function createPost(post) {
-    const container = document.createElement("section");
-    container.className = "post";
-    container.style.background = post.bg;
-    container.style.scrollSnapAlign = "start";
+    const section = document.createElement("section");
+    section.className = "post";
+    section.style.background = post.bg;
+    section.style.scrollSnapAlign = "start";
 
     const header = document.createElement("div");
     header.className = "post-header";
@@ -53,26 +61,33 @@ function createPost(post) {
 
     const iframe = document.createElement("iframe");
     iframe.dataset.src =
-        `https://www.youtube.com/embed/${post.embedId}?autoplay=1&mute=1&playsinline=1&controls=0`;
+        `https://www.youtube.com/embed/${post.embedId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1`;
     iframe.allow =
         "autoplay; encrypted-media; picture-in-picture";
     iframe.allowFullscreen = true;
 
-    const videoWrapper = document.createElement("div");
-    videoWrapper.className = "video-wrapper";
-    videoWrapper.appendChild(iframe);
+    const video = document.createElement("div");
+    video.className = "video-wrapper";
+    video.appendChild(iframe);
 
-    container.appendChild(header);
-    container.appendChild(videoWrapper);
-    feed.appendChild(container);
+    section.appendChild(header);
+    section.appendChild(video);
+    feed.appendChild(section);
 
-    observer.observe(container);
+    observer.observe(section);
 }
 
 feed.addEventListener("scroll", () => {
     if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 200) {
         fetchPosts();
     }
+});
+
+window.addEventListener("hashchange", () => {
+    currentTopic = getTopic();
+    offset = 0;
+    feed.innerHTML = "";
+    fetchPosts();
 });
 
 fetchPosts();
