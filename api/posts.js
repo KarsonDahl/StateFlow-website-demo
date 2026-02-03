@@ -2,12 +2,12 @@
 
 const POSTS = {
     travel: [
-        { id: 1, embedId: "M6t47RI4bns", title: "Tokyo Night Walk" },
-        { id: 2, embedId: "vA1z2zH0RUk", title: "Paris in 30 Seconds" },
-        { id: 3, embedId: "JtGJ7XKq9Z4", title: "Iceland Waterfalls" },
-        { id: 4, embedId: "b7kN4L0v5RE", title: "Swiss Alps Train Ride" },
-        { id: 5, embedId: "p9mE0Yq9p5k", title: "New York Street Life" },
-        { id: 6, embedId: "3fYzKc2Xz7A", title: "Santorini Views" }
+        { id: 1, embedId: "DQYc93f7FJw", title: "Traveling in Italy" },
+        { id: 2, embedId: "VLpo8wz2vAU", title: "Paris in 30 Seconds" },
+        { id: 3, embedId: "Vann80C6tCU", title: "Iceland Waterfalls" },
+        { id: 4, embedId: "H7gMAklJB1Q", title: "Swiss Alps Train Ride" },
+        { id: 5, embedId: "KaRI932cQa4", title: "New York Street Life" },
+        { id: 6, embedId: "7J5_5Qz7sJk", title: "Santorini Views" }
     ],
 
     books: [
