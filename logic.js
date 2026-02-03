@@ -1,93 +1,84 @@
-// logic.js
-
 const feed = document.getElementById("feed");
+const loading = document.getElementById("loading");
 
 let offset = 0;
-let loading = false;
-const LIMIT = 1;
-
-feed.style.scrollSnapType = "y mandatory";
+let isLoading = false;
 
 function getTopic() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("topic") || location.hash.replace("#", "") || "travel";
+    const params = new URLSearchParams(window.location.search);
+    return params.get("topic") || "travel";
 }
 
 let currentTopic = getTopic();
+
+function setBackground(topic) {
+    document.body.style.backgroundImage = `url('images/${topic}.jpg')`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+}
+
+setBackground(currentTopic);
 
 const observer = new IntersectionObserver(
     entries => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
-
             const iframe = entry.target.querySelector("iframe");
             if (iframe && !iframe.src) {
                 iframe.src = iframe.dataset.src;
             }
-
             observer.unobserve(entry.target);
         });
     },
-    { threshold: 0.7 }
+    { threshold: 0.6 }
 );
 
 async function fetchPosts() {
-    if (loading) return;
-    loading = true;
+    if (isLoading) return;
+    isLoading = true;
+    loading.style.display = "block";
 
     const res = await fetch(
-        `/api/posts?topic=${currentTopic}&limit=${LIMIT}&offset=${offset}`
+        `/api/posts?topic=${currentTopic}&limit=1&offset=${offset}`
     );
     const data = await res.json();
 
     data.posts.forEach(createPost);
-
     offset = data.nextOffset;
-    loading = false;
+
+    loading.style.display = "none";
+    isLoading = false;
 }
 
 function createPost(post) {
-    const section = document.createElement("section");
+    const section = document.createElement("div");
     section.className = "post";
-    section.style.background = post.bg;
-    section.style.scrollSnapAlign = "start";
 
     const header = document.createElement("div");
     header.className = "post-header";
-    header.innerHTML = `
-    <h2>${post.title}</h2>
-    <span>@${post.author}</span>
-  `;
+    header.textContent = post.title;
 
     const iframe = document.createElement("iframe");
     iframe.dataset.src =
-        `https://www.youtube.com/embed/${post.embedId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1`;
-    iframe.allow =
-        "autoplay; encrypted-media; picture-in-picture";
+        `https://www.youtube.com/embed/${post.embedId}?autoplay=1&mute=1&playsinline=1&controls=0`;
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
     iframe.allowFullscreen = true;
 
-    const video = document.createElement("div");
-    video.className = "video-wrapper";
-    video.appendChild(iframe);
+    const wrapper = document.createElement("div");
+    wrapper.className = "video-wrapper";
+    wrapper.appendChild(iframe);
 
     section.appendChild(header);
-    section.appendChild(video);
+    section.appendChild(wrapper);
     feed.appendChild(section);
 
     observer.observe(section);
 }
 
 feed.addEventListener("scroll", () => {
-    if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 200) {
+    if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 150) {
         fetchPosts();
     }
-});
-
-window.addEventListener("hashchange", () => {
-    currentTopic = getTopic();
-    offset = 0;
-    feed.innerHTML = "";
-    fetchPosts();
 });
 
 fetchPosts();
