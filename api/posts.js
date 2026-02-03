@@ -11,48 +11,48 @@ const POSTS = {
     ],
 
     books: [
-        { id: 7, embedId: "D2wJYp3Y5KQ", title: "Books That Changed My Life" },
-        { id: 8, embedId: "Zp6FfO7ZrZ0", title: "Read More This Year" },
-        { id: 9, embedId: "GkZ9m8nqT7A", title: "Philosophy Explained Simply" },
-        { id: 10, embedId: "JxE4XQ2pZkY", title: "Must Read Classics" },
-        { id: 11, embedId: "Kp5mYQzZP4E", title: "Why Reading Still Matters" },
-        { id: 12, embedId: "r5U0Yp2M5k8", title: "Atomic Habits Insight" }
+        { id: 7, embedId: "VMjhvmV599g", title: "Books That Changed My Life" },
+        { id: 8, embedId: "xdfu5uqJYEE", title: "Read More This Year" },
+        { id: 9, embedId: "kjLdLtI3NG0", title: "Philosophy Explained Simply" },
+        { id: 10, embedId: "GutWwsiBIIc", title: "Must Read Classics" },
+        { id: 11, embedId: "v2YTJBKLLY0", title: "Why Reading Still Matters" },
+        { id: 12, embedId: "ZOWeLxkO3v8", title: "Atomic Habits Insight" }
     ],
 
     cars: [
-        { id: 13, embedId: "8UVNT4wvIGY", title: "Supercars in Slow Motion" },
-        { id: 14, embedId: "KQ6zr6kCPj8", title: "How Engines Work" },
-        { id: 15, embedId: "fLexgOxsZu0", title: "Electric vs Gas Cars" },
-        { id: 16, embedId: "CevxZvSJLk8", title: "Car Design Evolution" },
-        { id: 17, embedId: "Zi_XLOBDo_Y", title: "Racing Psychology" },
-        { id: 18, embedId: "uelHwf8o7_U", title: "Classic Car Restorations" }
+        { id: 13, embedId: "Rhzt4jI9c2Q", title: "Supercars in Slow Motion" },
+        { id: 14, embedId: "KggpS5Yf_Jw", title: "How Engines Work" },
+        { id: 15, embedId: "70QvA0zqBvE", title: "Electric vs Gas Cars" },
+        { id: 16, embedId: "KbcgkC8vkZM", title: "Car Design Evolution" },
+        { id: 17, embedId: "Cn3lXAdxNTs", title: "Racing Psychology" },
+        { id: 18, embedId: "Bf32bVR0wfo", title: "Classic Car Restorations" }
     ],
 
     technology: [
-        { id: 19, embedId: "kZ9P7LQFJXk", title: "AI Explained Fast" },
-        { id: 20, embedId: "Z7Qp9kFJkLk", title: "How the Internet Works" },
-        { id: 21, embedId: "FZkL9P7JQXk", title: "What Is a Server?" },
-        { id: 22, embedId: "QZP9kF7LJXk", title: "JavaScript in 30s" },
-        { id: 23, embedId: "ZkF9Q7PJXLk", title: "Databases Explained" },
-        { id: 24, embedId: "P7kFZQ9LJXk", title: "Programming Tip" }
+        { id: 19, embedId: "MYWpaNYAo0o", title: "AI Explained Fast" },
+        { id: 20, embedId: "_yr-VNLW9nU", title: "How the Internet Works" },
+        { id: 21, embedId: "mCvSvGjiGeY", title: "What Is a Server?" },
+        { id: 22, embedId: "b6A3h1zknrI", title: "JavaScript in 30s" },
+        { id: 23, embedId: "crZalY8oxyw", title: "Databases Explained" },
+        { id: 24, embedId: "srNZ9WFsGSY", title: "Programming Tip" }
     ],
 
     videoGames: [
         { id: 25, embedId: "V-_O7nl0Ii0", title: "Why Games Are Art" },
-        { id: 26, embedId: "1k8craCGpgs", title: "Best Indie Games" },
-        { id: 27, embedId: "J---aiyznGQ", title: "Speedrunning Explained" },
-        { id: 28, embedId: "9bZkp7q19f0", title: "Retro Gaming Nostalgia" },
-        { id: 29, embedId: "OPf0YbXqDm0", title: "Game Design Secrets" },
-        { id: 30, embedId: "RgKAFK5djSk", title: "Multiplayer Psychology" }
+        { id: 26, embedId: "76hrCIA6T6U", title: "Best Indie Games" },
+        { id: 27, embedId: "llaJXy18T2A", title: "Speedrunning Explained" },
+        { id: 28, embedId: "1Pp6yfJmKFg", title: "Retro Gaming Nostalgia" },
+        { id: 29, embedId: "utIYw4ORPgE", title: "Game Design Secrets" },
+        { id: 30, embedId: "4U_sMeiJh-E", title: "Multiplayer Psychology" }
     ],
 
     art: [
-        { id: 31, embedId: "60ItHLz5WEA", title: "Modern Art Explained" },
-        { id: 32, embedId: "hT_nvWreIhg", title: "Digital Art Process" },
-        { id: 33, embedId: "uelHwf8o7_U", title: "Color Theory Basics" },
-        { id: 34, embedId: "ktvTqknDobU", title: "Street Art Culture" },
-        { id: 35, embedId: "lp-EO5I60KA", title: "Daily Sketching Habit" },
-        { id: 36, embedId: "09R8_2nJtjg", title: "Creative Burnout" }
+        { id: 31, embedId: "JTfIWhc6lyY", title: "Surrealism Explained" },
+        { id: 32, embedId: "D29i7PZ8uO0", title: "Digital Art Process" },
+        { id: 33, embedId: "lmY8xCzNt8M", title: "Color Theory Basics" },
+        { id: 34, embedId: "lcNXyaB7aVw", title: "Street Art Culture" },
+        { id: 35, embedId: "Q3Pp_fjbDO8", title: "Daily Sketching Habit" },
+        { id: 36, embedId: "SN5RcvRzXgc", title: "Mr. Doodle" }
     ]
 };
 
