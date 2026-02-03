@@ -1,91 +1,72 @@
 // api/posts.js
 
-// --- Topic arrays ---
-const TOPIC1_VIDEO_DATA = [
-    { vidID: 1, vidLink: "https://mock.com/post-01", content: "Books - Post One" },
-    { vidID: 2, vidLink: "https://mock.com/post-02", content: "Books - Post Two" },
-    { vidID: 3, vidLink: "https://mock.com/post-03", content: "Books - Post Three" },
-    { vidID: 4, vidLink: "https://mock.com/post-04", content: "Books - Post Four" },
-    { vidID: 5, vidLink: "https://mock.com/post-05", content: "Books - Post Five" },
-    { vidID: 6, vidLink: "https://mock.com/post-06", content: "Books - Post Six" },
-];
+const POSTS = {
+    travel: [
+        { id: 1, embedId: "M6t47RI4bns", title: "Tokyo Night Walk" },
+        { id: 2, embedId: "vA1z2zH0RUk", title: "Paris in 30 Seconds" },
+        { id: 3, embedId: "JtGJ7XKq9Z4", title: "Iceland Waterfalls" },
+        { id: 4, embedId: "b7kN4L0v5RE", title: "Swiss Alps Train Ride" },
+        { id: 5, embedId: "p9mE0Yq9p5k", title: "New York Street Life" },
+        { id: 6, embedId: "3fYzKc2Xz7A", title: "Santorini Views" }
+    ],
 
-const TOPIC2_VIDEO_DATA = [
-    { vidID: 7, vidLink: "https://mock.com/post-07", content: "Technology - Post One" },
-    { vidID: 8, vidLink: "https://mock.com/post-08", content: "Technology - Post Two" },
-    { vidID: 9, vidLink: "https://mock.com/post-09", content: "Technology - Post Three" },
-    { vidID: 10, vidLink: "https://mock.com/post-10", content: "Technology - Post Four" },
-    { vidID: 11, vidLink: "https://mock.com/post-11", content: "Technology - Post Five" },
-    { vidID: 12, vidLink: "https://mock.com/post-12", content: "Technology - Post Six" },
-];
+    books: [
+        { id: 7, embedId: "D2wJYp3Y5KQ", title: "Books That Changed My Life" },
+        { id: 8, embedId: "Zp6FfO7ZrZ0", title: "Read More This Year" },
+        { id: 9, embedId: "GkZ9m8nqT7A", title: "Philosophy Explained Simply" },
+        { id: 10, embedId: "JxE4XQ2pZkY", title: "Must Read Classics" },
+        { id: 11, embedId: "Kp5mYQzZP4E", title: "Why Reading Still Matters" },
+        { id: 12, embedId: "r5U0Yp2M5k8", title: "Atomic Habits Insight" }
+    ],
 
-const TOPIC3_VIDEO_DATA = [
-    { vidID: 13, vidLink: "https://mock.com/post-13", content: "VideoGames - Post One" },
-    { vidID: 14, vidLink: "https://mock.com/post-14", content: "VideoGames - Post Two" },
-    { vidID: 15, vidLink: "https://mock.com/post-15", content: "VideoGames - Post Three" },
-    { vidID: 16, vidLink: "https://mock.com/post-16", content: "VideoGames - Post Four" },
-    { vidID: 17, vidLink: "https://mock.com/post-17", content: "VideoGames - Post Five" },
-    { vidID: 18, vidLink: "https://mock.com/post-18", content: "VideoGames - Post Six" },
-];
+    cars: [
+        { id: 13, embedId: "8UVNT4wvIGY", title: "Supercars in Slow Motion" },
+        { id: 14, embedId: "KQ6zr6kCPj8", title: "How Engines Work" },
+        { id: 15, embedId: "fLexgOxsZu0", title: "Electric vs Gas Cars" },
+        { id: 16, embedId: "CevxZvSJLk8", title: "Car Design Evolution" },
+        { id: 17, embedId: "Zi_XLOBDo_Y", title: "Racing Psychology" },
+        { id: 18, embedId: "uelHwf8o7_U", title: "Classic Car Restorations" }
+    ],
 
-const TOPIC4_VIDEO_DATA = [
-    { vidID: 19, vidLink: "https://mock.com/post-19", content: "Art - Post One" },
-    { vidID: 20, vidLink: "https://mock.com/post-20", content: "Art - Post Two" },
-    { vidID: 21, vidLink: "https://mock.com/post-21", content: "Art - Post Three" },
-    { vidID: 22, vidLink: "https://mock.com/post-22", content: "Art - Post Four" },
-    { vidID: 23, vidLink: "https://mock.com/post-23", content: "Art - Post Five" },
-    { vidID: 24, vidLink: "https://mock.com/post-24", content: "Art - Post Six" },
-];
+    technology: [
+        { id: 19, embedId: "kZ9P7LQFJXk", title: "AI Explained Fast" },
+        { id: 20, embedId: "Z7Qp9kFJkLk", title: "How the Internet Works" },
+        { id: 21, embedId: "FZkL9P7JQXk", title: "What Is a Server?" },
+        { id: 22, embedId: "QZP9kF7LJXk", title: "JavaScript in 30s" },
+        { id: 23, embedId: "ZkF9Q7PJXLk", title: "Databases Explained" },
+        { id: 24, embedId: "P7kFZQ9LJXk", title: "Programming Tip" }
+    ],
 
-const TOPIC5_VIDEO_DATA = [
-    { vidID: 25, vidLink: "https://mock.com/post-25", content: "Cars - Post One" },
-    { vidID: 26, vidLink: "https://mock.com/post-26", content: "Cars - Post Two" },
-    { vidID: 27, vidLink: "https://mock.com/post-27", content: "Cars - Post Three" },
-    { vidID: 28, vidLink: "https://mock.com/post-28", content: "Cars - Post Four" },
-    { vidID: 29, vidLink: "https://mock.com/post-29", content: "Cars - Post Five" },
-    { vidID: 30, vidLink: "https://mock.com/post-30", content: "Cars - Post Six" },
-];
+    videoGames: [
+        { id: 25, embedId: "V-_O7nl0Ii0", title: "Why Games Are Art" },
+        { id: 26, embedId: "1k8craCGpgs", title: "Best Indie Games" },
+        { id: 27, embedId: "J---aiyznGQ", title: "Speedrunning Explained" },
+        { id: 28, embedId: "9bZkp7q19f0", title: "Retro Gaming Nostalgia" },
+        { id: 29, embedId: "OPf0YbXqDm0", title: "Game Design Secrets" },
+        { id: 30, embedId: "RgKAFK5djSk", title: "Multiplayer Psychology" }
+    ],
 
-const TOPIC6_VIDEO_DATA = [
-    { vidID: 31, vidLink: "https://mock.com/post-31", content: "Travel - Post One" },
-    { vidID: 32, vidLink: "https://mock.com/post-32", content: "Travel - Post Two" },
-    { vidID: 33, vidLink: "https://mock.com/post-33", content: "Travel - Post Three" },
-    { vidID: 34, vidLink: "https://mock.com/post-34", content: "Travel - Post Four" },
-    { vidID: 35, vidLink: "https://mock.com/post-35", content: "Travel - Post Five" },
-    { vidID: 36, vidLink: "https://mock.com/post-36", content: "Travel - Post Six" },
-];
-
-const topics = {
-    books: TOPIC1_VIDEO_DATA,
-    technology: TOPIC2_VIDEO_DATA,
-    videoGames: TOPIC3_VIDEO_DATA,
-    art: TOPIC4_VIDEO_DATA,
-    cars: TOPIC5_VIDEO_DATA,
-    travel: TOPIC6_VIDEO_DATA,
+    art: [
+        { id: 31, embedId: "60ItHLz5WEA", title: "Modern Art Explained" },
+        { id: 32, embedId: "hT_nvWreIhg", title: "Digital Art Process" },
+        { id: 33, embedId: "uelHwf8o7_U", title: "Color Theory Basics" },
+        { id: 34, embedId: "ktvTqknDobU", title: "Street Art Culture" },
+        { id: 35, embedId: "lp-EO5I60KA", title: "Daily Sketching Habit" },
+        { id: 36, embedId: "09R8_2nJtjg", title: "Creative Burnout" }
+    ]
 };
 
-// --- Vercel Serverless Function ---
-export default async function handler(req, res) {
-    if (req.method !== "GET") {
-        return res.status(405).json({ message: "Method Not Allowed" });
-    }
+export default function handler(req, res) {
+    const topic = req.query.topic || "travel";
+    const limit = Number(req.query.limit) || 1;
+    const offset = Number(req.query.offset) || 0;
 
-    const { topic = "travel", limit = 5, offset = 0 } = req.query;
-    const data = topics[topic] || [];
-
-    // Simulated delay (still works in serverless)
-    await new Promise((r) => setTimeout(r, 500));
-
-    const startIndex = Number(offset);
-    const endIndex = startIndex + Number(limit);
-
-    const posts = data.slice(startIndex, endIndex).map(row => ({
-        link: row.vidLink,
-        content: row.content
-    }));
+    const list = POSTS[topic] || [];
+    const slice = list.slice(offset, offset + limit);
 
     res.status(200).json({
-        posts,
-        total: data.length
+        posts: slice,
+        total: list.length,
+        nextOffset: offset + slice.length >= list.length ? 0 : offset + slice.length
     });
 }
