@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore StateFlow</title>
+    <link rel="icon" href="images/icon.jpg" type="image/x-icon">
     <link rel="stylesheet" href="scroll.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -35,49 +36,76 @@
                             <li><a href="/posts.html">AI-curated Topic</a></li>
                         </ul>
                     </details>
-
                 </li>
             </ul>
         </div>
     </div>
     <div class="container relative h-screen">
+        <button id="like" class="likebutton btn text-neutral-content border-none shadow-none bg-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                stroke="currentColor" class="size-[1.7em]">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+        </button>
+        <button id="comment" class="commentbutton btn text-neutral-content border-none shadow-none bg-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                stroke="currentColor" class="size-[1.6em]">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+            </svg>
+
+        </button>
+        <div class="commentsection">
+            <button class="comment-close btn btn-sm btn-circle absolute top-2 right-2">×</button>
+            <p>Type your comment here...</p>
+            <textarea class="textarea w-full" placeholder="Write a comment..."></textarea>
+            <button class="btn btn-primary mt-2 comment-post">Post</button>
+        </div>
+
+
         <div id="feed"></div>
         <div id="loading" class="animate-pulse">Loading...</div>
     </div>
 
-
     <script src="logic.js"></script>
     <div class="fab">
         <!-- a focusable div with tabindex is necessary to work on all browsers. role="button" is necessary for accessibility -->
-        <div tabindex="0" role="button" class="btn btn-lg btn-circle btn-secondary">
-            <svg aria-label="New" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+        <div tabindex="0" role="button" class="btn btn-xl btn-circle btn-secondary">
+            <svg aria-label="New" src="images/BookIcon.svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
         </div>
 
         <!-- buttons that show up when FAB is open -->
-        <button class="btn btn-lg btn-circle">
-            <a href="posts.html?topic=books"><img src="images/booksIcon.png"></a>
+        <button class="btn btn-xl btn-circle">
+            <a href="posts.html?topic=books" class="btn btn-xl btn-circle">
+                <img src="images/BookIcon.svg"></a>
         </button>
-        <button class="btn btn-lg btn-circle bg-neutral">
-            <a href="posts.html?topic=technology" class="btn btn-lg btn-circle"><img
-                    src="images/technologyIcon.png"></a>
+        <button class="btn btn-xl btn-circle bg-neutral">
+            <a href="posts.html?topic=technology" class="btn btn-xl btn-circle">
+                <img src="images/TechnologyIcon.svg"></a>
         </button>
-        <button class="btn btn-lg btn-circle">
-            <a href="posts.html?topic=videoGames" class="btn btn-lg btn-circle"><img
-                    src="images/videoGamesIcon.png"></a>
+        <button class="btn btn-xl btn-circle">
+            <a href="posts.html?topic=videoGames" class="btn btn-xl btn-circle">
+                <img src="images/VideoGamesIcon.svg"></a>
         </button>
-        <button class="btn btn-lg btn-circle">
-            <a href="posts.html?topic=art" class="btn btn-lg btn-circle"><img src="images/artIcon.png"></a>
+        <button class="btn btn-xl btn-circle">
+            <a href="posts.html?topic=art" class="btn btn-xl btn-circle">
+                <img src="images/ArtIcon.svg"></a>
         </button>
-        <button class="btn btn-lg btn-circle">
-            <a href="posts.html?topic=cars" class="btn btn-lg btn-circle"><img src="images/carsIcon.png"></a>
+        <button class="btn btn-xl btn-circle">
+            <a href="posts.html?topic=cars" class="btn btn-xl btn-circle">
+                <img src="images/CarIcon.svg"></a>
         </button>
-        <button class="btn btn-lg btn-circle">
-            <a href="posts.html?topic=travel" class="btn btn-lg btn-circle"><img src="images/travelIcon.png"></a>
+        <button class="btn btn-xl btn-circle">
+            <a href="posts.html?topic=travel" class="btn btn-xl btn-circle">
+                <img src="images/TravelIcon.svg"></a>
         </button>
     </div>
+    <script src="scroll-hide.js"></script>
 </body>
+
 
 </html>

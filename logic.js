@@ -1,73 +1,84 @@
-let postCount = 0;
-let offset = 0;
-const params = new URLSearchParams(window.location.search);
-const topic = params.get("topic") || "travel"; // default topic
-
 const feed = document.getElementById("feed");
-const loadingIndicator = document.getElementById("loading"); // Use the loading element
-const MAX_FEED_POSTS = 2; // max posts in feed
+const loading = document.getElementById("loading");
 
-// --- Function to create a single post from received data ---
-function setTopicBackground(topicName) {
-    const imageUrl = `images/${topicName}.jpg`; // topic-named image
-    document.body.style.backgroundImage = `url('${imageUrl}')`;
+let offset = 0;
+let isLoading = false;
+
+function getTopic() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("topic") || "travel";
+}
+
+let currentTopic = getTopic();
+
+function setBackground(topic) {
+    document.body.style.backgroundImage = `url('images/${topic}.jpg')`;
     document.body.style.backgroundSize = "cover";
-    document.body.style.height = "100vh";               // ensure full viewport height
-
     document.body.style.backgroundPosition = "center";
 }
-setTopicBackground(topic);
 
-function createPost(postData) {
-    postCount++;
-    const post = document.createElement("div");
-    post.className = "post";
+setBackground(currentTopic);
 
-    post.textContent = ` ${postData.content}`;
+const observer = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const iframe = entry.target.querySelector("iframe");
+            if (iframe && !iframe.src) {
+                iframe.src = iframe.dataset.src;
+            }
+            observer.unobserve(entry.target);
+        });
+    },
+    { threshold: 0.6 }
+);
 
+async function fetchPosts() {
+    if (isLoading) return;
+    isLoading = true;
+    loading.style.display = "block";
 
-    const link = document.createElement("a");
-    link.href = postData.link;
-    link.textContent = "Read more";
-    post.appendChild(link);
-    feed.appendChild(post);
+    const res = await fetch(
+        `/api/posts?topic=${currentTopic}&limit=1&offset=${offset}`
+    );
+    const data = await res.json();
 
-    // Remove oldest posts if exceeding MAX_FEED_POSTS
-    while (feed.children.length > MAX_FEED_POSTS) {
-        feed.removeChild(feed.firstChild);
-    }
+    data.posts.forEach(createPost);
+    offset = data.nextOffset;
+
+    loading.style.display = "none";
+    isLoading = false;
 }
-// --- Function to fetch data from API ---
-async function fetchPosts(numberOfPosts) {
-    const apiUrl = `http://localhost:3000/api/posts?topic=${topic}&limit=${numberOfPosts}&offset=${offset}`;
 
-    loadingIndicator.style.display = 'block';
+function createPost(post) {
+    const section = document.createElement("div");
+    section.className = "post";
 
-    try {
-        const response = await fetch(apiUrl);
-        const { posts, total } = await response.json();
+    const header = document.createElement("div");
+    header.className = "post-header";
+    header.textContent = post.title;
 
-        posts.forEach((post) => createPost(post));
-        offset += numberOfPosts;
+    const iframe = document.createElement("iframe");
+    iframe.dataset.src =
+        `https://www.youtube.com/embed/${post.embedId}?autoplay=1&mute=1&playsinline=1&controls=0`;
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+    iframe.allowFullscreen = true;
 
-        if (offset >= total) {  // loop reset
-            offset = 0;      // reset for loop
-        }
+    const wrapper = document.createElement("div");
+    wrapper.className = "video-wrapper";
+    wrapper.appendChild(iframe);
 
-    } catch (error) {
-        console.error("Could not fetch posts:", error);
-    } finally {
-        loadingIndicator.style.display = 'none';
-    }
+    section.appendChild(header);
+    section.appendChild(wrapper);
+    feed.appendChild(section);
+
+    observer.observe(section);
 }
-// --- Initial load ---
-fetchPosts(1);
 
-// --- Infinite scroll only ---
 feed.addEventListener("scroll", () => {
-    if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 80) {
-        if (loadingIndicator.style.display === "none") fetchPosts(1);
+    if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 150) {
+        fetchPosts();
     }
-
 });
-// Note: Adjusted scroll threshold to 80px for better UX
+
+fetchPosts();
