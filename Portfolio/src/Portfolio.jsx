@@ -33,11 +33,11 @@ const EXPERIENCE = [
     detail: "Delivered full-stack features for enterprise healthcare applications using TypeScript, React, C#, and SQL. Built and consumed REST APIs, resolved defects through root-cause analysis, and applied secure coding and CI/CD practices.",
   },
   {
-    // TODO: confirm exact title (e.g. "Freelance Software Developer"), and add scope/tech. Not on the 9/26 resume.
-    title: "Freelance Developer",
+    // TODO: add specifics (types of engagements, technologies, outcomes) per industry. No client names unless approved.
+    title: "Independent Consultant",
     company: "Self-employed",
-    date: "May 2025 – Present",
-    detail: "[TODO: add 1–2 sentences on freelance work — types of projects and technologies. No client names unless approved.]",
+    date: "Oct 2024 – Present",
+    detail: "Provide independent consulting across healthcare, software, hospitality, and language translation. [TODO: add 1–2 sentences on the work and technologies used.]",
   },
   {
     title: "Software Engineering Intern",
@@ -63,14 +63,34 @@ const PROJECTS = [
   },
   {
     name: "WaterDetect",
-    // TODO: confirm tech stack (tags), EMRC expansion/wording, and whether the project can be described further.
-    desc: "Offline-first Android app for four-electrode ground resistivity surveys, built for EMRC.",
-    tags: ["Android", "Offline-First", "Resistivity Surveys"],
+    // TODO: confirm EMRC wording. Desc/tags now reflect the supplied project info (cross-platform mobile + web, SQLite, Neon Postgres, Vercel).
+    desc: "Cross-platform mobile and web app for four-electrode ground resistivity surveys, built for EMRC. Replaces paper capture and spreadsheet transfer with real-time apparent-resistivity computation and live charts.",
+    bullets: [
+      "Designed and built a cross-platform mobile and web application that digitizes four-electrode ground resistivity surveys, replacing manual paper capture and spreadsheet transfer with real-time apparent-resistivity computation and live sounding and profile charts.",
+      "Architected an offline-first data layer on SQLite as the source of truth. It stores raw SI-unit measurements and derives all computed values, so formula corrections and method changes re-derive every result without data migration.",
+      "Implemented automated field-quality checks (electrode geometry, missing polarity reversal, current imbalance) that flag erroneous readings while the crew is still on site.",
+      "Built an opt-in, one-way sync pipeline to a central Neon Postgres database through a serverless API on Vercel, using schema-validated payloads, hashed and revocable per-crew API keys, idempotent upserts keyed on client-generated UUIDs, and request size limits.",
+      "Isolated the calculation logic in a framework-independent core with 74 unit tests, and verified the sync API with end-to-end tests against a live database (authentication, ownership conflicts, malformed payloads, idempotency).",
+      "Deployed a public web demo with SQLite compiled to WebAssembly, so the app runs entirely in the browser.",
+    ],
+    tags: ["Offline-First", "SQLite", "Neon Postgres", "Vercel", "WebAssembly"],
     url: "https://github.com/KarsonDahl/WaterDetectEMRC",
     links: [
       { label: "GitHub", url: "https://github.com/KarsonDahl/WaterDetectEMRC" },
       { label: "Live demo", url: "https://water-detection-delta.vercel.app/" },
     ],
+  },
+  {
+    name: "TFT-Time",
+    // TODO: confirm the Expo/React Native bullet applies to TFT-Time (resume lists it as Next.js web), and the "[from prototype through release]" wording from the supplied text.
+    desc: "Full-stack Next.js/TypeScript app that ingests third-party Riot Games data and turns large JSON datasets into user-facing analytics.",
+    bullets: [
+      "Design and ship responsive web apps with Next.js, React and TypeScript, deployed on Vercel with Redis caching for fast, low-cost data access.",
+      "Build cross-platform mobile apps with Expo and React Native.",
+      "Integrate third-party APIs (for example Riot Games) with rate limiting, caching and fallbacks, so apps stay reliable when services are slow or unavailable.",
+    ],
+    tags: ["Next.js", "TypeScript", "React", "Redis", "Expo", "Vercel"],
+    url: "https://tft-time.vercel.app",
   },
   // Updated to match resume (9/26). TODO: confirm which LLM provider, if you want it named.
   { name: "StateFlow", tags: ["Node.js", "REST APIs", "Generative AI", "Vercel"], desc: "Full-stack social content platform with AI-curated topic generation, category-based filtering, and a live comment system. Integrates a third-party LLM API end-to-end and deploys serverlessly on Vercel with CI/CD.", url: "https://stateflowdemo.vercel.app/" },
@@ -492,6 +512,7 @@ function ExperienceItem({ exp, isLast }) {
 // ─── PROJECT CARD (tilt + glow) ─────────────────────────────
 function ProjectCard({ project }) {
   const [hov, setHov] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
     <TiltCard style={{
       background: hov ? C.cardBgHov : C.cardBg,
@@ -523,6 +544,21 @@ function ProjectCard({ project }) {
           }}>{t}</span>
         ))}
       </div>
+      {project.bullets && (
+        <div>
+          <div style={{
+            overflow: "hidden", maxHeight: open ? "700px" : "0", opacity: open ? 1 : 0,
+            transition: "max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease",
+          }}>
+            <ul style={{ margin: "4px 0 0", paddingLeft: "18px", fontSize: "0.8rem", color: C.textMuted, lineHeight: 1.6, display: "flex", flexDirection: "column", gap: "6px" }}>
+              {project.bullets.map((b, i) => <li key={i}>{b}</li>)}
+            </ul>
+          </div>
+          <p onClick={() => setOpen(!open)} style={{ margin: "8px 0 0", fontSize: "0.72rem", color: "rgba(122,184,146,0.6)", fontStyle: "italic", cursor: "none", userSelect: "none" }}>
+            {open ? "Hide details ▲" : "Show details ▼"}
+          </p>
+        </div>
+      )}
       {project.links && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", marginTop: "2px" }}>
           {project.links.map((l) => (
