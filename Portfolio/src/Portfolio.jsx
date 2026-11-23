@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── COLOR TOKENS ───────────────────────────────────────────
 const C = {
+
   bg: "#0d1210",
   cardBg: "rgba(34,60,46,0.35)",
   cardBorder: "rgba(120,180,140,0.18)",
@@ -18,39 +19,65 @@ const C = {
 
 // ─── DATA ───────────────────────────────────────────────────
 const SKILLS = [
-  { category: "Languages", items: ["C++", "JavaScript", "Python", "HTML/CSS", "TypeScript", "Svelte"] },
-  { category: "Databases", items: ["MySQL", "SQL Server"] },
-  { category: "Tools", items: ["GitHub", "Git", "VSCode", "Visual Studio", "VirtualBox", "VMware"] },
-  { category: "Networking", items: ["Wireshark", "Cisco Packet Tracer", "Linux", "Windows"] },
+  { category: "Languages & Frameworks", items: ["TypeScript", "JavaScript", "React", "Next.js", "Node.js", "Svelte", "Python", "C++", "C#", "HTML/CSS", "SQL"] },
+  { category: "AI & APIs", items: ["LLM API Integration", "Prompt Engineering", "RESTful API Design", "JSON", "Authentication"] },
+  { category: "Cloud, DevOps & Databases", items: ["Docker", "CI/CD Pipelines", "Vercel Serverless", "Git/GitHub", "MySQL", "SQL Server"] },
+  { category: "Systems & Security", items: ["Linux", "Windows Server", "VMware/VirtualBox/vSphere", "Wireshark", "Cisco Packet Tracer", "Firewall Configuration"] },
 ];
 
 const EXPERIENCE = [
   {
+    title: "Software Development Intern",
+    company: "Select Medical · Mechanicsburg, PA",
+    date: "May 2026 – Aug 2026",
+    detail: "Delivered full-stack features for enterprise healthcare applications using TypeScript, React, C#, and SQL. Built and consumed REST APIs, resolved defects through root-cause analysis, and applied secure coding and CI/CD practices.",
+  },
+  {
+    // TODO: confirm exact title (e.g. "Freelance Software Developer"), and add scope/tech. Not on the 9/26 resume.
+    title: "Freelance Developer",
+    company: "Self-employed",
+    date: "May 2025 – Present",
+    detail: "[TODO: add 1–2 sentences on freelance work — types of projects and technologies. No client names unless approved.]",
+  },
+  {
     title: "Software Engineering Intern",
-    company: "SIL Language Software",
+    company: "SIL Language Software · Remote",
     date: "May 2025 – Aug 2025",
-    detail: "Migrated PWA components from Svelte 4 to Svelte 5, collaborated in Agile sprints, and debugged app modules to improve maintainability and stability across the application.",
+    detail: "Migrated progressive web app components from Svelte 4 to Svelte 5, and resolved bugs and hardened front-end and back-end code in an Agile team using GitHub and remote stand-ups.",
   },
   {
-    title: "Production Labor (Swing Shift)",
-    company: "Lynden Door",
-    date: "May 2024 – Aug 2024",
-    detail: "Operated automated systems with precision troubleshooting, optimizing throughput in high-output manufacturing environments under time-sensitive conditions.",
-  },
-  {
-    title: "Resident Advisor",
+    title: "Resident Advisor & Peer Mentor",
     company: "Liberty University",
     date: "2025 – Present",
-    detail: "Supervised 40+ students, mentored 5 peer leaders, and fostered community through mediation, coordination, and weekly engagement programming.",
+    detail: "Selected to manage a residential floor of 40+ students; supervised and developed 5 junior peer mentors.",
   },
 ];
 
 const PROJECTS = [
-  { name: "StateFlow Website Demo", tags: ["JavaScript", "Full Stack"], desc: "Prototype of a social media platform webpage with dynamic state management.", url: "https://github.com/KarsonDahl/StateFlow-website-demo" },
+  {
+    name: "Scriptoria",
+    // TODO: add one-line description of what Scriptoria does, repo/demo URLs (if public), and tech stack.
+    desc: "Senior capstone project built for Wycliffe by a team of 5, where I lead architecture and front-end. [TODO: what Scriptoria does]",
+    tags: ["Capstone", "Architecture", "Front-End"],
+    url: null, // TODO: repo URL, if public
+  },
+  {
+    name: "WaterDetect",
+    // TODO: confirm tech stack (tags), EMRC expansion/wording, and whether the project can be described further.
+    desc: "Offline-first Android app for four-electrode ground resistivity surveys, built for EMRC.",
+    tags: ["Android", "Offline-First", "Resistivity Surveys"],
+    url: "https://github.com/KarsonDahl/WaterDetectEMRC",
+    links: [
+      { label: "GitHub", url: "https://github.com/KarsonDahl/WaterDetectEMRC" },
+      { label: "Live demo", url: "https://water-detection-delta.vercel.app/" },
+    ],
+  },
+  // Updated to match resume (9/26). TODO: confirm which LLM provider, if you want it named.
+  { name: "StateFlow", tags: ["Node.js", "REST APIs", "Generative AI", "Vercel"], desc: "Full-stack social content platform with AI-curated topic generation, category-based filtering, and a live comment system. Integrates a third-party LLM API end-to-end and deploys serverlessly on Vercel with CI/CD.", url: "https://stateflowdemo.vercel.app/" },
   { name: "C++ Learning Projects", tags: ["C++", "Algorithms"], desc: "A growing collection of C++ programs covering core language concepts and problem solving.", url: "https://github.com/KarsonDahl/CPlusPlus-Learning-Projects" },
   { name: "DSA Learning Projects", tags: ["C++", "Data Structures"], desc: "All content completed in Data Structures & Algorithms — sorting, graphs, trees, and more.", url: "https://github.com/KarsonDahl/DSA-Learning-Projects" },
   { name: "Goatscaping Co", tags: ["HTML", "CSS", "JavaScript"], desc: "A full multi-page website built for a landscaping company — navigation, forms, and responsive layout.", url: "https://github.com/KarsonDahl/GoatscapingCo" },
-  { name: "AppBuilder PWA", tags: ["TypeScript", "Svelte", "PWA"], desc: "Forked Progressive Web App template for Scripture App Builder — real-world open source contribution.", url: "https://github.com/KarsonDahl/appbuilder-pwa" },
+  { name: "AppBuilder PWA", tags: ["TypeScript", "Svelte", "PWA"], desc: "Forked Progressive Web App template for Scripture App Builder — real-world open source contribution.", url: "https://github.com/sillsdev/appbuilder-pwa" },
 ];
 
 // ─── SIMPLE NOISE (value noise with smooth interpolation) ───
@@ -78,7 +105,7 @@ const noise = smoothNoise();
 // ─── LEAF BURST ON CLICK ────────────────────────────────────
 function LeafBurst({ leaves, onDone }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 800);
+    const t = setTimeout(onDone, 100);
     return () => clearTimeout(t);
   }, [onDone]);
   return leaves.map((l, i) => (
@@ -97,14 +124,39 @@ function LeafBurst({ leaves, onDone }) {
 // ─── CUSTOM TREE CURSOR ─────────────────────────────────────
 function TreeCursor({ pos }) {
   return (
-    <div style={{
-      position: "fixed", left: pos.x, top: pos.y,
-      transform: "translate(-50%, -50%)",
-      pointerEvents: "none", zIndex: 10000,
-      transition: "left 0.08s linear, top 0.08s linear",
-    }}>
-      {/* trailing glow ring */}
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><path d="M8.68602 16.288L8.10556 9.37387C7.96399 7.68752 9.85032 6.59846 11.24 7.56424L16.9375 11.524C18.6256 12.6972 17.6579 15.348 15.611 15.1577L14.8273 15.0849C13.9821 15.0063 13.1795 15.4697 12.825 16.2409L12.4962 16.9561C11.6376 18.8238 8.858 18.3365 8.68602 16.288Z" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+
+    <div
+      style={{
+        position: "fixed",
+        top: -8,
+        left: -10,
+        transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
+        pointerEvents: "none",
+        zIndex: 10000,
+        willChange: "transform",
+      }}
+    >
+      <svg
+        width="45"
+        height="35"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{
+          display: "block",
+
+          // 🔑 Hotspot alignment: tip of cursor
+          transform: "translate(-2px, -2px)",
+        }}
+      >
+        <path
+          d="M8.68602 16.288L8.10556 9.37387C7.96399 7.68752 9.85032 6.59846 11.24 7.56424L16.9375 11.524C18.6256 12.6972 17.6579 15.348 15.611 15.1577L14.8273 15.0849C13.9821 15.0063 13.1795 15.4697 12.825 16.2409L12.4962 16.9561C11.6376 18.8238 8.858 18.3365 8.68602 16.288Z"
+          stroke="#7ab892"          // theme color
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </div>
   );
 }
@@ -112,10 +164,12 @@ function TreeCursor({ pos }) {
 // ─── PARTICLE BACKGROUND (noise-driven drift) ──────────────
 function createParticle(w, h) {
   return {
-    x: Math.random() * w, y: Math.random() * h,
-    vx: 0, vy: 0,
-    r: Math.random() * 1.8 + 0.5,
-    alpha: Math.random() * 0.3 + 0.12,
+    x: Math.random() * w,
+    y: Math.random() * h,
+    vx: 0,
+    vy: 0,
+    r: Math.random() * 2.8 + 0.5,
+    alpha: Math.random() * 0.5 + 0.12,
     noiseOffX: Math.random() * 100,
     noiseOffY: Math.random() * 100,
   };
@@ -128,40 +182,75 @@ function InteractiveBackground({ mousePos }) {
   const mousePosRef = useRef({ x: -9999, y: -9999 });
   const tRef = useRef(0);
 
-  useEffect(() => { mousePosRef.current = mousePos; }, [mousePos]);
+  // Hard reset page chrome
+
+
+  useEffect(() => {
+    Object.assign(document.body.style, {
+      margin: "0",
+      padding: "0",
+      overflowX: "hidden",
+      overflowY: "auto",
+      background: "#0d1210",
+    });
+  }, []);
+
+  useEffect(() => {
+    mousePosRef.current = mousePos;
+  }, [mousePos]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    let w, h;
+
+    let cssW, cssH;
 
     const resize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      particlesRef.current = Array.from({ length: 80 }, () => createParticle(w, h));
+      const dpr = window.devicePixelRatio || 1;
+
+      cssW = window.innerWidth;
+      cssH = window.innerHeight;
+
+      // drawing buffer
+      canvas.width = cssW * dpr;
+      canvas.height = cssH * dpr;
+
+      // visual size (explicit viewport sizing)
+      canvas.style.width = "100vw";
+      canvas.style.height = "100vh";
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      particlesRef.current = Array.from(
+        { length: 80 },
+        () => createParticle(cssW, cssH)
+      );
     };
+
     resize();
     window.addEventListener("resize", resize);
 
     const loop = () => {
-      ctx.clearRect(0, 0, w, h);
+      ctx.clearRect(0, 0, cssW, cssH);
+
       const mp = mousePosRef.current;
       const particles = particlesRef.current;
+
       tRef.current += 0.005;
       const t = tRef.current;
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      for (const p of particles) {
+        const nx = noise(p.noiseOffX + t, p.noiseOffY) * 1;
+        const ny = noise(p.noiseOffY + t, p.noiseOffX + 50) * 1;
 
-        // noise-driven target velocity — gives organic wandering
-        const nx = noise(p.noiseOffX + t, p.noiseOffY) * 0.7;
-        const ny = noise(p.noiseOffY + t, p.noiseOffX + 50) * 0.7;
         p.vx += (nx - p.vx) * 0.02;
         p.vy += (ny - p.vy) * 0.02;
 
         // mouse repulsion
-        const dx = p.x - mp.x, dy = p.y - mp.y;
+        const dx = p.x - mp.x;
+        const dy = p.y - mp.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
+
         if (dist < 130 && dist > 0) {
           const force = (130 - dist) / 130;
           p.vx += (dx / dist) * force * 0.5;
@@ -170,14 +259,15 @@ function InteractiveBackground({ mousePos }) {
 
         p.vx *= 0.96;
         p.vy *= 0.96;
+
         p.x += p.vx;
         p.y += p.vy;
 
         // wrap
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
-        if (p.y < -10) p.y = h + 10;
-        if (p.y > h + 10) p.y = -10;
+        if (p.x < -10) p.x = cssW + 10;
+        if (p.x > cssW + 10) p.x = -10;
+        if (p.y < -10) p.y = cssH + 10;
+        if (p.y > cssH + 10) p.y = -10;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -187,23 +277,43 @@ function InteractiveBackground({ mousePos }) {
 
       // mouse glow
       if (mp.x > 0) {
-        const grad = ctx.createRadialGradient(mp.x, mp.y, 0, mp.x, mp.y, 100);
+        const grad = ctx.createRadialGradient(mp.x, mp.y, 0, mp.x, mp.y, 70);
         grad.addColorStop(0, "rgba(122,184,146,0.08)");
         grad.addColorStop(1, "rgba(122,184,146,0)");
+
         ctx.beginPath();
-        ctx.arc(mp.x, mp.y, 100, 0, Math.PI * 2);
+        ctx.arc(mp.x, mp.y, 70, 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.fill();
       }
 
       animRef.current = requestAnimationFrame(loop);
     };
+
     loop();
-    return () => { window.removeEventListener("resize", resize); cancelAnimationFrame(animRef.current); };
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animRef.current);
+    };
   }, []);
 
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "fixed",
+        inset: 0,          // pins all edges
+        width: "100vw",    // explicit viewport sizing
+        height: "100vh",
+        display: "block",
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
+  );
 }
+
 
 // ─── TILT CARD WRAPPER ──────────────────────────────────────
 function TiltCard({ children, style }) {
@@ -272,7 +382,7 @@ function GlowButton({ children, href, target, style }) {
         border: `1px solid rgba(122,184,146,${hovered ? 0.55 : 0.25})`,
         borderRadius: "30px", color: C.accent, textDecoration: "none",
         fontSize: "0.88rem", fontFamily: "'Inter', sans-serif", fontWeight: 500,
-        cursor: "pointer", position: "relative", overflow: "hidden",
+        cursor: "none", position: "relative", overflow: "hidden",
         transition: "all 0.25s cubic-bezier(0.4,0,0.2,1)",
         boxShadow: hovered ? `0 0 22px ${C.accentGlow}` : "none",
         transform: `translate(${offset.x}px, ${offset.y}px) translateY(${hovered ? -2 : 0}px)`,
@@ -309,7 +419,7 @@ function SkillTag({ label }) {
         transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
         transform: hov ? "translateY(-4px) scale(1.08)" : "none",
         boxShadow: hov ? `0 6px 16px rgba(0,0,0,0.25), 0 0 12px ${C.accentGlow}` : "none",
-        cursor: "default",
+        cursor: "none",
       }}
     >
       {label}
@@ -344,7 +454,7 @@ function ExperienceItem({ exp, isLast }) {
   const [hov, setHov] = useState(false);
   return (
     <div
-      style={{ marginBottom: isLast ? 0 : "34px", position: "relative", cursor: "pointer" }}
+      style={{ marginBottom: isLast ? 0 : "34px", position: "relative", cursor: "none" }}
       onClick={() => setOpen(!open)}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -397,9 +507,11 @@ function ProjectCard({ project }) {
         onMouseLeave={() => setHov(false)}
       >
         <p style={{ margin: 0, fontSize: "1.02rem", color: C.textLight, fontWeight: 600 }}>{project.name}</p>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ color: C.accent, opacity: hov ? 1 : 0.35, transition: "opacity 0.3s, transform 0.3s", transform: hov ? "translate(2px,-2px)" : "none", display: "inline-block" }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
-        </a>
+        {project.url && (
+          <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ color: C.accent, opacity: hov ? 1 : 0.35, transition: "opacity 0.3s, transform 0.3s", transform: hov ? "translate(2px,-2px)" : "none", cursor: "none", display: "inline-block" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
+          </a>
+        )}
       </div>
       <p style={{ margin: 0, fontSize: "0.85rem", color: C.textMuted, lineHeight: 1.65 }}>{project.desc}</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px" }}>
@@ -411,6 +523,13 @@ function ProjectCard({ project }) {
           }}>{t}</span>
         ))}
       </div>
+      {project.links && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", marginTop: "2px" }}>
+          {project.links.map((l) => (
+            <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.78rem", color: C.accent, textDecoration: "none", fontWeight: 500, cursor: "none" }}>{l.label} ↗</a>
+          ))}
+        </div>
+      )}
     </TiltCard>
   );
 }
@@ -472,6 +591,23 @@ export default function Portfolio() {
     <div style={{ minHeight: "100vh", background: C.bg, color: C.text, fontFamily: "'Inter', sans-serif", overflowX: "hidden", cursor: "none" }}>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
+      {/* ── NAVBAR ── */}
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 5000,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "16px 24px",
+        background: "rgba(13,18,16,0.8)", backdropFilter: "blur(8px)",
+        borderBottom: `1px solid ${C.cardBorder}`,
+      }}>
+        <img src="/tree.png" alt="Logo" style={{ height: "32px", width: "auto" }} />
+        <div style={{ display: "flex", gap: "24px" }}>
+          <a href="#about" style={{ color: C.accent, textDecoration: "none", fontSize: "0.9rem", fontWeight: 500, cursor: "none" }}>About</a>
+          <a href="#skills" style={{ color: C.accent, textDecoration: "none", fontSize: "0.9rem", fontWeight: 500, cursor: "none" }}>Skills</a>
+          <a href="#projects" style={{ color: C.accent, textDecoration: "none", fontSize: "0.9rem", fontWeight: 500, cursor: "none" }}>Projects</a>
+          <a href="#contact" style={{ color: C.accent, textDecoration: "none", fontSize: "0.9rem", fontWeight: 500, cursor: "none" }}>Contact</a>
+        </div>
+      </nav>
+
       {/* Keyframes */}
       <style>{`
         @keyframes leafFly {
@@ -493,7 +629,7 @@ export default function Portfolio() {
       {leaves.length > 0 && <LeafBurst leaves={leaves} onDone={() => setLeaves([])} />}
 
       {/* ── HERO ── */}
-      <header style={{ ...wrap, paddingTop: "clamp(100px, 20vh, 180px)", paddingBottom: "70px" }}>
+      <header style={{ ...wrap, paddingTop: "clamp(140px, 20vh, 200px)", paddingBottom: "70px" }}>
         <p style={{ ...labelStyle, marginBottom: "18px" }}>Welcome</p>
         <h1 style={{
           fontFamily: "'Playfair Display', serif",
@@ -521,8 +657,9 @@ export default function Portfolio() {
         <h2 style={titleStyle}>A Little About Me</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "14px" }}>
           {[
-            { label: "Education", val: "B.S. Computer Science", sub: "Software Engineering · Liberty University", extra: "GPA 3.61 · Dean's List · Expected May 2027" },
-            { label: "Location", val: "Lynchburg, VA", sub: "Originally from Bellingham, WA", extra: null },
+            // TODO: GPA updated 3.61 -> 3.48 per 9/26 resume; "Dean's List" removed (not on resume) — restore if still accurate.
+            { label: "Education", val: "B.S. Computer Science", sub: "Software Engineering · Liberty University", extra: "GPA 3.48 · Expected May 2027" },
+            { label: "Location", val: "Lynchburg, VA", sub: "Originally from Bellingham, WA", extra: "Willing to relocate" },
             { label: "Focus", val: "Full-Stack & Systems", sub: "Web apps, networking, data systems", extra: null },
           ].map((c) => <AboutCard key={c.label} {...c} />)}
         </div>
@@ -565,7 +702,7 @@ export default function Portfolio() {
         <p style={labelStyle}>Contact</p>
         <h2 style={titleStyle}>Let's Connect</h2>
         <p style={{ fontSize: "0.92rem", color: C.textMuted, maxWidth: "420px", margin: "0 auto 34px", lineHeight: 1.8 }}>
-          Open to internships, collaborations, and interesting projects. I'd love to hear from you.
+          {/* TODO: confirm target-role wording */}Open to software engineering and solutions architecture roles, collaborations, and interesting projects. I'd love to hear from you.
         </p>
         <GlowButton href="mailto:karsondahl17@gmail.com" style={{ padding: "13px 34px", fontSize: "0.93rem" }}>
           <EmailIcon /> Get In Touch
